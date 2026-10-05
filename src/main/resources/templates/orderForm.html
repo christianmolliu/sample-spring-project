@@ -21,7 +21,7 @@
     </a>
 
     <ul>
-        <li th:each="taco:${tacos}">
+        <li th:each="taco:${tacoOrder.tacos}">
             <span th:text="${taco.name}">taco name</span>
         </li>
     </ul>
