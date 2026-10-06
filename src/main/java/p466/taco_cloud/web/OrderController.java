@@ -14,6 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import p466.taco_cloud.TacoOrder;
 import p466.taco_cloud.data.OrderRepository;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import p466.taco_cloud.User;
+
 @Slf4j
 @Controller
 @RequestMapping("/orders")
@@ -35,14 +38,16 @@ public class OrderController {
     public String processOrder(
             @Valid @ModelAttribute("tacoOrder") TacoOrder order,
             Errors errors,
-            SessionStatus sessionStatus) {
+            SessionStatus sessionStatus,
+            @AuthenticationPrincipal User user) {
 
         if (errors.hasErrors()) {
             return "orderForm";
         }
 
-        orderRepo.save(order);
+        order.setUserId(user.getId());
 
+        orderRepo.save(order);
         sessionStatus.setComplete();
 
         return "redirect:/";
